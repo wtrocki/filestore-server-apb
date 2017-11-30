@@ -1,0 +1,29 @@
+version: 1.0
+name: fh-sync-server-apb
+description: The FeedHenry Sync Server APB
+bindable: False
+async: optional
+tags:
+  - mobile-service
+metadata:
+  displayName: FeedHenry Sync Server
+  console.openshift.io/iconClass: font-icon icon-nodejs
+  serviceName: fh-sync-server
+plans:
+  - name: default
+    description: Deploy FH Sync-Server
+    free: True
+    metadata: {}
+    parameters:
+    - name: MONGODB_ADMIN_PASSWORD
+      description: Password for the MongoDB admin user. This value will be generated if not specified.
+      pattern: "[a-zA-Z0-9]{40}"
+      type: string
+    - name: MONGODB_USER_NAME
+      description: Username for the created MongoDB user.
+      default: "sync-user"
+      type: string
+    - name: MONGODB_USER_PASSWORD
+      description: Password for the created MongoDB user. This value will be generated if not specified.
+      pattern: "[a-zA-Z0-9]{40}"
+      type: string

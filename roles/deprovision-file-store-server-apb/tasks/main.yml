@@ -1,0 +1,10 @@
+- name: delete file-store-server-apb resource
+  command: oc delete {{ item }} filestore-server -n {{ namespace }}
+  with_items:
+    - service
+    - route
+- name: delete file-mongo resoures
+  command: oc delete {{ item }} mongodb -n {{ namespace }}
+  with_items:
+    - service
+    - secret

@@ -1,0 +1,3 @@
+fhsync_port: "3000"
+fhsync_secret_name: "fh-sync-server"
+fhsync_version: "latest"
