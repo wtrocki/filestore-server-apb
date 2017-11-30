@@ -8,12 +8,12 @@
   
 - name: "Retrieve route to filestore-server"
   shell: "oc get routes filestore-server -n {{ namespace }} | grep -v NAME | awk '{print $2}'"
-  register: fhsync_route
+  register: filestore_route
 
 - name: "Create filestore-server secret yaml file"
   template:
     src: secret.yml.j2
     dest: /tmp/secret.yaml
 
-- name: "Create FH Sync-server secret"
+- name: "Create FH filestore-server secret"
   shell: "oc create -f /tmp/secret.yaml -n {{ namespace }}"

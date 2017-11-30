@@ -1,6 +1,6 @@
 DOCKERHOST = docker.io
 DOCKERORG = feedhenry
-IMAGENAME = fh-sync-server-apb
+IMAGENAME = filestore-server-apb
 TAG = latest
 USER=$(shell id -u)
 PWD=$(shell pwd)

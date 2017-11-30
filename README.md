@@ -1,4 +1,4 @@
-# FH-Sync Server APB
+# Filestore Server APB
 
 ## Local Development
 

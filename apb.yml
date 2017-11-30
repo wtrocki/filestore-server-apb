@@ -1,17 +1,17 @@
 version: 1.0
-name: fh-sync-server-apb
-description: The FeedHenry Sync Server APB
+name: filestore-server-apb
+description: The FeedHenry Filestore Server APB
 bindable: False
 async: optional
 tags:
   - mobile-service
 metadata:
-  displayName: FeedHenry Sync Server
+  displayName: FeedHenry Filestore Server
   console.openshift.io/iconClass: font-icon icon-nodejs
-  serviceName: fh-sync-server
+  serviceName: filestore-server
 plans:
   - name: default
-    description: Deploy FH Sync-Server
+    description: Deploy Filestore-Server
     free: True
     metadata: {}
     parameters:
@@ -21,7 +21,7 @@ plans:
       type: string
     - name: MONGODB_USER_NAME
       description: Username for the created MongoDB user.
-      default: "sync-user"
+      default: "user"
       type: string
     - name: MONGODB_USER_PASSWORD
       description: Password for the created MongoDB user. This value will be generated if not specified.

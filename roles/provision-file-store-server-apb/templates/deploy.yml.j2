@@ -1,18 +1,18 @@
 apiVersion: v1
 kind: Template
 metadata:
-  name: fh-sync-server
+  name: filestore-server
   annotations:
-    openshift.io/display-name: FeedHenry Sync (Persistent)
-    description: FeedHenry Sync Server
+    openshift.io/display-name: FeedHenry filestore (Persistent)
+    description: FeedHenry Filestore Server
     iconClass: icon-nodejs
-    tags: instant-app,sync,mobile-service
-    template.openshift.io/long-description: Data Synchronisation by FeedHenry.
+    tags: instant-app,filestore,mobile-service
+    template.openshift.io/long-description: filestore by FeedHenry.
     template.openshift.io/provider-display-name: FeedHenry
-    template.openshift.io/documentation-url: https://github.com/feedhenry/fh-sync-server
-    template.openshift.io/support-url: https://github.com/feedhenry/fh-sync-server/issues
+    template.openshift.io/documentation-url: https://github.com/feedhenry/filestore-server
+    template.openshift.io/support-url: https://github.com/feedhenry/filestore-server/issues
 labels:
-  template: fh-sync-server
+  template: filestore-server
 parameters:
   - name: MONGODB_ADMIN_PASSWORD
     description: Password for the MongoDB admin user. This value will be generated if not specified.
@@ -20,7 +20,7 @@ parameters:
     from: "[a-zA-Z0-9]{40}"
   - name: MONGODB_USER_NAME
     description: Username for the created MongoDB user.
-    value: "sync-user"
+    value: "user"
   - name: MONGODB_USER_PASSWORD
     description: Password for the created MongoDB user. This value will be generated if not specified.
     generate: expression
@@ -29,21 +29,21 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: fh-sync-server
+    name: filestore-server
     annotations:
       org.feedhenry.mcp/prometheus: "plain"
     labels:
-      app: fh-sync-server
-      template: fh-sync-server
+      app: filestore-server
+      template: filestore-server
       mobile: enabled
   spec:
     ports:
-    - name: fh-sync-server
+    - name: filestore-server
       port: 3000
       protocol: TCP
       targetPort: 3000
     selector:
-      run: fh-sync-server
+      run: filestore-server
     sessionAffinity: None
     type: ClusterIP
 
@@ -51,11 +51,11 @@ objects:
   kind: Service
   metadata:
     annotations:
-      template.openshift.io/expose-name: "fh-sync-server"
-      template.openshift.io/expose-type: "fh-sync-server"
+      template.openshift.io/expose-name: "filestore-server"
+      template.openshift.io/expose-type: "filestore-server"
     labels:
-      app: fh-sync-server
-      template: fh-sync-server
+      app: filestore-server
+      template: filestore-server
     name: mongodb
   spec:
     ports:
@@ -73,8 +73,8 @@ objects:
   metadata:
     name: redis
     labels:
-      app: fh-sync-server
-      template: fh-sync-server
+      app: filestore-server
+      template: filestore-server
   spec:
     ports:
     - port: 6379
@@ -89,15 +89,15 @@ objects:
   kind: Deployment
   metadata:
     labels:
-      app: fh-sync-server
-      template: fh-sync-server
+      app: filestore-server
+      template: filestore-server
       mobile: enabled
-    name: fh-sync-server
+    name: filestore-server
   spec:
     replicas: 1
     selector:
       matchLabels:
-        run: fh-sync-server
+        run: filestore-server
     strategy:
       activeDeadlineSeconds: 21600
       rollingParams:
@@ -110,10 +110,10 @@ objects:
     template:
       metadata:
         labels:
-          run: fh-sync-server
+          run: filestore-server
       spec:
         containers:
-        - name: fh-sync-server
+        - name: filestore-server
           env:
           - name: MONGODB_USER
             valueFrom:
@@ -125,7 +125,7 @@ objects:
               secretKeyRef:
                 key: database-password
                 name: mongodb
-          image: feedhenry/fh-sync-server:{{ fhsync_version }}
+          image: feedhenry/filestore-server:{{ filestore_version }}
           imagePullPolicy: Always
           ports:
           - containerPort: 3000
@@ -145,8 +145,8 @@ objects:
   kind: Deployment
   metadata:
     labels:
-      app: fh-sync-server
-      template: fh-sync-server
+      app: filestore-server
+      template: filestore-server
     name: mongodb
   spec:
     replicas: 1
@@ -182,7 +182,7 @@ objects:
                 key: database-admin-password
                 name: mongodb
           - name: MONGODB_DATABASE
-            value: sync
+            value: filestore
           image: centos/mongodb-32-centos7@sha256:aa37993c3be2d4731db79c0c7aba11db3e9352b1adc586c7e9054f57808789c0
           imagePullPolicy: IfNotPresent
           livenessProbe:
@@ -246,8 +246,8 @@ objects:
   kind: Deployment
   metadata:
     labels:
-      app: fh-sync-server
-      template: fh-sync-server
+      app: filestore-server
+      template: filestore-server
       run: redis
     name: redis
   spec:
@@ -292,19 +292,19 @@ objects:
   metadata:
     annotations:
       template.openshift.io/expose-uri: "https://{.spec.host}{.spec.path}"
-    name: fh-sync-server
+    name: filestore-server
     labels:
-      app: fh-sync-server
-      template: fh-sync-server
+      app: filestore-server
+      template: filestore-server
       mobile: enabled
   spec:
     port:
-      targetPort: fh-sync-server
+      targetPort: filestore-server
     tls:
       termination: edge
     to:
       kind: Service
-      name: fh-sync-server
+      name: filestore-server
     wildcardPolicy: None
 
 - apiVersion: v1
@@ -315,8 +315,8 @@ objects:
     database-user: ${MONGODB_USER_NAME}
   metadata:
     labels:
-      app: fh-sync-server
-      template: fh-sync-server
+      app: filestore-server
+      template: filestore-server
     name: mongodb
   type: Opaque
 - apiVersion: v1
@@ -324,8 +324,8 @@ objects:
   metadata:
     name: mongodb
     labels:
-      app: fh-sync-server
-      template: fh-sync-server
+      app: filestore-server
+      template: filestore-server
   spec:
     accessModes:
     - ReadWriteOnce
