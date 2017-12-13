@@ -1,6 +1,6 @@
 # Filestore Server APB
 
-NOTE: For filestore server source code see:
+*NOTE*: For filestore server source code see:
 https://github.com/wtrocki/filestore-server
 
 
